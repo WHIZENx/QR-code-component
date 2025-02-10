@@ -6,72 +6,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My Assignment 1</title>
     <style>
-        html {
-          height: 100%;
-          width: 100%;
-        }
+      @font-face {
+        font-display: swap;
+        font-family: "Outfit";
+        font-style: normal;
+        font-weight: 400;
+        src: local(""), url("./fonts/Outfit-Regular.ttf") format("truetype"),
+      }
 
-        body {
-          width: 100%;
-          height: 100%;
-          margin: 0;
-          background-color: #d5e1ef;
-          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        }
+      @font-face {
+        font-display: swap;
+        font-family: "Outfit";
+        font-style: normal;
+        font-weight: 700;
+        src: local(""), url("./fonts/Outfit-Bold.ttf") format("truetype"),
+      }
 
-        .container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          height: 100%;
+      html {
+        height: 100%;
+        width: 100%;
+      }
 
-        }
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        background-color: #d6e2f0;
+        font-family: Outfit;
+      }
 
-        .card-container {
-          width: 320px;
-          height: fit-content;
-          background-color: white;
-          border-radius: 15px;
-          padding: 24px;
-          box-shadow: 0 4px 25px 0 #0000000e;
-        }
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
 
-        .card-logo {
-          display: flex;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-          max-width: 512px;
-        }
+      }
 
-        .img-logo {
-          border-radius: 5px;
-          width: 100%;
-        }
+      .card-container {
+        width: 320px;
+        height: fit-content;
+        background-color: #ffffff;
+        border-radius: 15px;
+        padding: 24px;
+        box-shadow: 0 4px 20px 0 #0000000e;
+      }
 
-        .card-info {
-          margin-bottom: 15px;
-        }
+      .card-logo {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        max-width: 512px;
+      }
 
-        .card-info-group {
-          display: flex;
-          justify-content: center;
-          text-align: center;
-          padding: 0 10px;
-          margin-top: 15px;
-        }
+      .img-logo {
+        border-radius: 5px;
+        width: 100%;
+      }
 
-        .card-header {
-          font-weight: bolder;
-          font-size: 24px;
-        }
+      .card-info {
+        margin-bottom: 15px;
+      }
 
-        .card-body {
-          color: #646464;
-          font-weight: lighter;
-          font-size: 18px;
-        }
+      .card-info-group {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        padding: 0 10px;
+        margin-top: 15px;
+      }
+
+      .card-header {
+        font-weight: 700;
+        font-size: 24px;
+        color: #1f3251;
+      }
+
+      .card-body {
+        color: #68778d;
+        font-weight: 400;
+        font-size: 18px;
+      }
     </style>
   </head>
   <body>
