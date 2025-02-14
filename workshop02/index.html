@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="./images/favicon-32x32.png" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Assignment 1</title>
+    <style>
+      @font-face {
+        font-display: swap;
+        font-family: "Outfit";
+        font-style: normal;
+        font-weight: 400;
+        src: local(""), url("./fonts/Outfit-Regular.ttf") format("truetype"),
+      }
+
+      @font-face {
+        font-display: swap;
+        font-family: "Outfit";
+        font-style: normal;
+        font-weight: 700;
+        src: local(""), url("./fonts/Outfit-Bold.ttf") format("truetype"),
+      }
+
+      html {
+        height: 100%;
+        width: 100%;
+      }
+
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        background-color: #d6e2f0;
+        font-family: Outfit;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+      }
+
+      .card-container {
+        height: fit-content;
+        background-color: #ffffff;
+        border-radius: 15px;
+        padding: 16px;
+        box-shadow: 0 10px 50px 0 #00000026;
+      }
+
+      h2 {
+        font-family: Outfit;
+      }
+
+      .input-group {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        width: 100%;
+      }
+
+      .input-group-prepend {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-left: 1px solid lightgray;
+        border-top: 1px solid lightgray;
+        border-bottom: 1px solid lightgray;
+        background-color: #f7f7f7;
+      }
+
+      .input-group-text {
+        display: flex;
+        align-items: center;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .form-control {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        appearance: none;
+        background-clip: padding-box;
+      }
+
+      .input-group > .form-control {
+        position: relative;
+        flex: 1 1 auto;
+        width: 1%;
+        min-width: 0;
+      }
+
+      #input-money {
+        font-family: Outfit;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border: 1px solid lightgray;
+        outline: none;
+      }
+
+      #input-money:disabled {
+        background: #00000012;
+        border: 1px solid gray;
+      }
+
+      .btn-container {
+        margin: 10px 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        font-family: Outfit;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        text-decoration: none;
+        vertical-align: middle;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+        border-radius: 0.375rem;
+        text-transform: none;
+        margin: 0;
+      }
+
+      .btn-bet {
+        color: white;
+        border: 1px solid #dee2e6;
+        background-color: #0d6efd;
+      }
+
+      .btn-roll {
+        color: white;
+        border: 1px solid #dee2e6;
+        background-color: #198754;
+      }
+
+      .radio-group {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        gap: 3rem;
+      }
+
+      .radio-group-info {
+        text-align: center;
+      }
+
+      .input-group-prepend-readonly {
+        margin-top: 5px;
+        padding: 8px;
+        background-color: rgb(243, 243, 243);
+        border-radius: 3px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card-container">
+        <h2 style="text-align: center;">Hi-Lo game</h2>
+        <div>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                Money
+              </span>
+            </div>
+            <input min="0" id="input-money" type="number" class="form-control" placeholder="Enter money" />
+          </div>
+          <div class="btn-container">
+            <button onclick="betMoney()" class="btn btn-bet">
+              Bet
+            </button>
+          </div>
+        </div>
+        <div>
+          <form>
+            <div class="radio-group">
+              <div class="radio-group-info">
+                <input type="radio" id="low" name="roll" value="-1" onclick="setRollType('low')" checked />
+                <label for="low">Low</label>
+                <div id="low-value" class="input-group-prepend-readonly">0</div>
+              </div>
+              <div class="radio-group-info">
+                <input type="radio" id="mid" name="roll" value="-1" onclick="setRollType('mid')" />
+                <label for="mid">Mid</label>
+                <div id="mid-value" class="input-group-prepend-readonly">0</div>
+              </div>
+              <div class="radio-group-info">
+                <input type="radio" id="high" name="roll" value="-1" onclick="setRollType('high')" />
+                <label for="high">High</label>
+                <div id="high-value" class="input-group-prepend-readonly">0</div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="btn-container">
+          <button onclick="rollDice()" class="btn btn-roll">
+            Roll Dice
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      let currentType = 'low';
+      let currentElemType = document.getElementById(currentType);
+
+      function setRollType(type) {
+        currentType = type;
+        currentElemType = document.getElementById(type);
+        const radioValue = Number(currentElemType.value);
+        if (radioValue > -1) {
+          document.getElementById("input-money").value = radioValue;
+        } else {
+          document.getElementById("input-money").value = '';
+        }
+      }
+
+      function betMoney() {
+        const input = document.getElementById("input-money").value;
+        if (!input || isNaN(input)) {
+          alert("Please input number of money.");
+          return;
+        }
+        const money = Number(input);
+        if (currentElemType) {
+          currentElemType.value = money;
+          document.getElementById(currentType + '-value').innerHTML = money;
+        }
+      }
+
+      function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      };
+
+      function capitalize(text) {
+        return String(text).charAt(0).toUpperCase() + String(text).slice(1);
+      }
+
+      function rollDice() {
+        const diceOne = getRandomInt(1, 6);
+        const diceTwo = getRandomInt(1, 6);
+        const diceThree = getRandomInt(1, 6);
+
+        const result = diceOne + diceTwo + diceThree;
+        let dice = '';
+        if (result <= 10) {
+          dice = 'low';
+        } else {
+          if (result === 11) {
+            dice = 'mid';
+          } else {
+            dice = 'high';
+          }
+        }
+
+        const elem = document.getElementById(dice + '-value');
+        let money = 0;
+        if (elem) {
+          money = Number(elem.innerText);
+          if (dice === 'mid') {
+            money *= 5;
+          }
+        }
+        alert('Won by '+ capitalize(dice) +', You get money ' + money + '!');
+      }
+    </script>
+  </body>
+</html>
