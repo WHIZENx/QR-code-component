@@ -4,7 +4,7 @@
     <link rel="icon" href="./images/favicon-32x32.png" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>My Assignment 1</title>
+    <title>My Assignment 2</title>
     <style>
       @font-face {
         font-display: swap;
@@ -151,7 +151,7 @@
         background-color: #198754;
       }
 
-      .radio-group {
+      .radio-group, .dice-group {
         display: flex;
         width: 100%;
         justify-content: center;
@@ -167,6 +167,22 @@
         padding: 8px;
         background-color: rgb(243, 243, 243);
         border-radius: 3px;
+      }
+
+      #result {
+        display: none;
+      }
+
+      .dice-result {
+        text-align: center;
+      }
+
+      .dice-group div:nth-child(2) img {
+        transform: rotate(90deg);
+      }
+
+      .dice-group div:nth-child(3) img {
+        transform: rotate(180deg);
       }
 
     </style>
@@ -216,6 +232,23 @@
             Roll Dice
           </button>
         </div>
+        <div id="result">
+          <hr />
+          <div class="dice-group">
+            <div>
+              <img width="96" src="./images/dice-roll.png" />
+              <div id="dice-one" class="input-group-prepend-readonly dice-result">0</div>
+            </div>
+            <div>
+              <img width="96" src="./images/dice-roll.png" />
+              <div id="dice-two" class="input-group-prepend-readonly dice-result">0</div>
+            </div>
+            <div>
+              <img width="96" src="./images/dice-roll.png" />
+              <div id="dice-three" class="input-group-prepend-readonly dice-result">0</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <script>
@@ -257,9 +290,15 @@
       }
 
       function rollDice() {
+        document.getElementById('result').style.display = 'block';
+
         const diceOne = getRandomInt(1, 6);
         const diceTwo = getRandomInt(1, 6);
         const diceThree = getRandomInt(1, 6);
+
+        document.getElementById('dice-one').innerHTML = diceOne;
+        document.getElementById('dice-two').innerHTML = diceTwo;
+        document.getElementById('dice-three').innerHTML = diceThree;
 
         const result = diceOne + diceTwo + diceThree;
         let dice = '';
