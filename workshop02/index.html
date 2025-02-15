@@ -33,6 +33,7 @@
         margin: 0;
         background-color: #d6e2f0;
         font-family: Outfit;
+        font-weight: 400;
       }
 
       .container {
@@ -52,8 +53,12 @@
         box-shadow: 0 10px 50px 0 #00000026;
       }
 
+      h1 {
+        margin-top: 0;
+      }
+
       h1, h2 {
-        font-family: Outfit;
+        font-weight: 700;
       }
 
       .input-group {
@@ -115,8 +120,19 @@
         cursor: default;
       }
 
+      #btn-bet-money {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+      }
+
+      #btn-bet-money:hover {
+        background-color: #0022ff;
+      }
+
       #btn-bet-money:disabled {
-        background-color: #0d6dfdcc;
+        background-color: #0d6dfdcc !important;
         cursor: default;
       }
 
@@ -161,6 +177,10 @@
         background-color: #198754;
       }
 
+      .btn-roll:hover, .btn-play-again:hover {
+        background-color: #076439;
+      }
+
       .radio-group, .dice-group {
         display: flex;
         width: 100%;
@@ -199,6 +219,18 @@
       .img-group img {
         z-index: 0;
         position: absolute;
+      }
+
+      #dice-img-one {
+        animation: animated_dice 1s 1;
+      }
+
+      #dice-img-two {
+        animation: animated_dice 1s 1 0.5s;
+      }
+
+      #dice-img-three {
+        animation: animated_dice 1s 1 1s;
       }
 
       @keyframes animated_dice
@@ -242,10 +274,12 @@
               <input min="0" id="input-money" type="number" class="form-control" placeholder="Enter money" onkeypress="onPressBetMoney(event)" />
             </div>
             <div class="btn-container">
-              <button id="btn-bet-money" onclick="betMoney()" class="btn btn-bet">
-                <img height="16" src="./images/betting.png"/>
-                Bet
-              </button>
+              <div id="btn-bet-money-container">
+                <button id="btn-bet-money" onclick="betMoney()" class="btn btn-bet">
+                  <img height="16" src="./images/betting.png"/>
+                  Bet
+                </button>
+              </div>
             </div>
           </div>
           <div>
@@ -270,7 +304,7 @@
             </form>
           </div>
           <div class="btn-container">
-            <button id="btn-roll-contain" onclick="rollDice()" class="btn btn-roll" >
+            <button id="btn-roll-container" onclick="rollDice()" class="btn btn-roll" >
               Roll Dice
             </button>
           </div>
@@ -403,12 +437,10 @@
         }
         document.getElementById('result-roll').innerText = 'Won by ' + capitalize(dice) + ', You get money ' + money + '!';
 
-        document.getElementById('btn-roll-contain').style.display = 'none';
-        document.getElementById('result').style.display = 'block';
+        document.getElementById('btn-roll-container').style.display = 'none';
+        document.getElementById('btn-bet-money-container').style.display = 'none';
 
-        document.getElementById('dice-img-one').style.animation = 'animated_dice 1s 1';
-        document.getElementById('dice-img-two').style.animation = 'animated_dice 1s 1 0.5s';
-        document.getElementById('dice-img-three').style.animation = 'animated_dice 1s 1 1s';
+        document.getElementById('result').style.display = 'block';
 
         document.getElementById('dice-img-one').src = './images/dice-'+ diceOne +'.png';
         document.getElementById('dice-img-two').src = './images/dice-'+ diceTwo +'.png';
@@ -444,7 +476,9 @@
         document.getElementById("input-money").readOnly = false;
         document.getElementById("btn-bet-money").disabled = false;
 
-        document.getElementById('btn-roll-contain').style.display = 'block';
+        document.getElementById('btn-roll-container').style.display = 'block';
+        document.getElementById('btn-bet-money-container').style.display = 'block';
+
         document.getElementById('result').style.display = 'none';
         document.getElementById('result-container').style.display = 'none';
       }
