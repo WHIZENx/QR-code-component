@@ -192,6 +192,16 @@
         text-align: center;
       }
 
+      .radio-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .radio-label label, .radio-label input {
+        cursor: pointer;
+      }
+
       .input-group-prepend-readonly {
         margin-top: 5px;
         padding: 8px;
@@ -199,7 +209,7 @@
         border-radius: 3px;
       }
 
-      #result, #result-container {
+      #result, #result-container, #btn-roll-container {
         display: none;
       }
 
@@ -241,12 +251,18 @@
         }
         25% {
           transform: rotate(0deg);
+        }
+        75% {
+          top: 16px;
           opacity: 1;
         }
         100% {
           transform: rotate(-360deg);
-          top: 16px;
         }
+      }
+
+      #result-roll {
+        animation: fadeIn 1s 1;
       }
 
       @keyframes fadeIn {
@@ -286,18 +302,24 @@
             <form>
               <div class="radio-group">
                 <div class="radio-group-info">
-                  <input type="radio" id="low" name="roll" value="-1" onclick="setRollType('low')" checked />
-                  <label for="low">Low</label>
+                  <div class="radio-label">
+                    <input type="radio" id="low" name="roll" value="-1" onclick="setRollType('low')" checked />
+                    <label for="low">Low</label>
+                  </div>
                   <div id="low-value" class="input-group-prepend-readonly">-</div>
                 </div>
                 <div class="radio-group-info">
-                  <input type="radio" id="mid" name="roll" value="-1" onclick="setRollType('mid')" />
-                  <label for="mid">Mid</label>
+                  <div class="radio-label">
+                    <input type="radio" id="mid" name="roll" value="-1" onclick="setRollType('mid')" />
+                    <label for="mid">Mid</label>
+                  </div>
                   <div id="mid-value" class="input-group-prepend-readonly">-</div>
                 </div>
                 <div class="radio-group-info">
-                  <input type="radio" id="high" name="roll" value="-1" onclick="setRollType('high')" />
-                  <label for="high">High</label>
+                  <div class="radio-label">
+                    <input type="radio" id="high" name="roll" value="-1" onclick="setRollType('high')" />
+                    <label for="high">High</label>
+                  </div>
                   <div id="high-value" class="input-group-prepend-readonly">-</div>
                 </div>
               </div>
@@ -387,6 +409,14 @@
           document.getElementById(currentType + '-value').innerText = money;
           document.getElementById("input-money").readOnly = true;
           document.getElementById("btn-bet-money").disabled = true;
+
+          const moneyLow = document.getElementById('low-value').innerText;
+          const moneyMid = document.getElementById('mid-value').innerText;
+          const moneyHigh = document.getElementById('high-value').innerText;
+
+          if (moneyLow != '-' && moneyMid != '-' && moneyHigh != '-') {
+            document.getElementById("btn-roll-container").style.display = 'block';
+          }
         }
       }
 
@@ -452,7 +482,6 @@
 
         setTimeout(() => {
           document.getElementById('result-container').style.display = 'block';
-          document.getElementById('result-roll').style.animation = 'fadeIn 1s 1';
 
           document.getElementById("input-money").value = elem.innerText;
           currentElemType.checked = true;
@@ -476,11 +505,16 @@
         document.getElementById("input-money").readOnly = false;
         document.getElementById("btn-bet-money").disabled = false;
 
+        currentType = 'low';
+        currentElemType = document.getElementById(currentType);
+        currentElemType.checked = true;
+
         document.getElementById('btn-roll-container').style.display = 'block';
         document.getElementById('btn-bet-money-container').style.display = 'block';
 
         document.getElementById('result').style.display = 'none';
         document.getElementById('result-container').style.display = 'none';
+        document.getElementById("btn-roll-container").style.display = 'none';
       }
     </script>
   </body>
