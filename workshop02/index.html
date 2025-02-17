@@ -245,7 +245,6 @@
       .img-group img {
         z-index: 0;
         position: absolute;
-        animation: dice_roll 1s 1;
       }
 
       @keyframes dice_roll
@@ -290,7 +289,6 @@
       #result-get-money {
         margin-top: 0;
         display: inline-block;
-        animation: fadeIn 1s 1;
       }
 
       @keyframes fadeIn {
@@ -441,6 +439,13 @@
       function showInfo() {
         document.getElementById('game-container').style.display = 'none';
         document.getElementById('game-information').style.display = 'block';
+
+        if (document.getElementById('result').style.display === 'block') {
+          document.getElementById('dice-img-one').style.animation = null;
+          document.getElementById('dice-img-two').style.animation = null;
+          document.getElementById('dice-img-three').style.animation = null;
+          document.getElementById('result-get-money').style.animation = null;
+        }
       }
 
       function backToGame() {
@@ -546,6 +551,9 @@
             document.getElementById('text-congrats').style.display = 'block';
           }
         }
+
+        document.getElementById('result-get-money').style.animation = 'fadeIn 1s 1';
+
         document.getElementById('result-roll').innerText = 'Total: ' + result + ', Won by ' + capitalize(dice) + '!';
         document.getElementById('result-get-money').innerText = 'You get money ' + money + '!';
 
@@ -557,6 +565,10 @@
         document.getElementById('dice-img-one').src = './images/dice-'+ diceOne +'.png';
         document.getElementById('dice-img-two').src = './images/dice-'+ diceTwo +'.png';
         document.getElementById('dice-img-three').src = './images/dice-'+ diceThree +'.png';
+
+        document.getElementById('dice-img-one').style.animation = 'dice_roll 1s 1';
+        document.getElementById('dice-img-two').style.animation = 'dice_roll 1s 1';
+        document.getElementById('dice-img-three').style.animation = 'dice_roll 1s 1';
 
         setTimeout(() => {
           document.getElementById('dice-one').innerText = diceOne;
