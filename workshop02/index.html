@@ -46,6 +46,7 @@
       }
 
       .card-container {
+        position: relative;
         height: fit-content;
         background-color: #ffffff;
         border-radius: 15px;
@@ -181,6 +182,16 @@
         background-color: #076439;
       }
 
+      .btn-back {
+        color: white;
+        border: 1px solid #dee2e6;
+        background-color: #dc3545;
+      }
+
+      .btn-back:hover {
+        background-color: #b91b2b;
+      }
+
       .radio-group, .dice-group {
         display: flex;
         width: 100%;
@@ -188,7 +199,7 @@
         gap: 3rem;
       }
 
-      .radio-group-info, #result-roll {
+      .radio-group-info, #result-roll, #result-get-money {
         text-align: center;
       }
 
@@ -196,6 +207,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+
+      .radio-label input {
+        margin-left: 0;
+        margin-top: 0;
       }
 
       .radio-label label, .radio-label input {
@@ -229,39 +245,51 @@
       .img-group img {
         z-index: 0;
         position: absolute;
+        animation: dice_roll 1s 1;
       }
 
-      #dice-img-one {
-        animation: animated_dice 1s 1;
-      }
-
-      #dice-img-two {
-        animation: animated_dice 1s 1 0.5s;
-      }
-
-      #dice-img-three {
-        animation: animated_dice 1s 1 1s;
-      }
-
-      @keyframes animated_dice
+      @keyframes dice_roll
       {
         0% {
           opacity: 0;
+          right: -8px;
           top: -36px;
-        }
-        25% {
           transform: rotate(0deg);
+          scale: 0.8;
+        }
+        49% {
+          transform: rotate(-360deg);
+          scale: 0.9;
+          top: 16px
+        }
+        50% {
+          top: 15px;
+          right: -8px;
+          opacity: 1;
+          transform: rotate(-90deg);
         }
         75% {
-          top: 16px;
-          opacity: 1;
+          top: 0px;
+          right: 0px;
         }
         100% {
           transform: rotate(-360deg);
+          top: 16px;
+          right: 16px;
+          scale: 1;
         }
       }
 
-      #result-roll {
+      #text-congrats {
+        color: #ff0000;
+        font-size: 1.17em;
+        margin-right: 5px;
+        display: none;
+      }
+
+      #result-get-money {
+        margin-top: 0;
+        display: inline-block;
         animation: fadeIn 1s 1;
       }
 
@@ -273,93 +301,134 @@
           opacity: 1;
         }
       }
+
+      #img-info {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+        opacity: 0.95;
+      }
+
+      #img-info:hover {
+        opacity: 1;
+      }
+
+      #game-information {
+        display: none;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="card-container">
-        <h1 style="text-align: center;">Hi-Lo game</h1>
-        <div style="z-index: 2; position: relative; background-color: #ffffff;">
-          <div>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  Money
-                </span>
+        <div id="game-container">
+          <img title="information" id="img-info" onclick="showInfo()" width="20" src="./images/information.png" />
+          <h1 style="text-align: center;">Hi-Lo game</h1>
+          <div style="z-index: 2; position: relative; background-color: #ffffff;">
+            <div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    Money
+                  </span>
+                </div>
+                <input min="0" id="input-money" type="number" class="form-control" placeholder="Enter money" onkeypress="onPressBetMoney(event)" />
               </div>
-              <input min="0" id="input-money" type="number" class="form-control" placeholder="Enter money" onkeypress="onPressBetMoney(event)" />
+              <div class="btn-container">
+                <div id="btn-bet-money-container">
+                  <button id="btn-bet-money" onclick="betMoney()" class="btn btn-bet">
+                    <img height="16" src="./images/betting.png"/>
+                    Bet
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <form>
+                <div class="radio-group">
+                  <div class="radio-group-info">
+                    <div class="radio-label">
+                      <input type="radio" id="low" name="roll" value="-1" onclick="setRollType('low')" checked />
+                      <label for="low">Low</label>
+                    </div>
+                    <div id="low-value" class="input-group-prepend-readonly">-</div>
+                  </div>
+                  <div class="radio-group-info">
+                    <div class="radio-label">
+                      <input type="radio" id="mid" name="roll" value="-1" onclick="setRollType('mid')" />
+                      <label for="mid">Mid</label>
+                    </div>
+                    <div id="mid-value" class="input-group-prepend-readonly">-</div>
+                  </div>
+                  <div class="radio-group-info">
+                    <div class="radio-label">
+                      <input type="radio" id="high" name="roll" value="-1" onclick="setRollType('high')" />
+                      <label for="high">High</label>
+                    </div>
+                    <div id="high-value" class="input-group-prepend-readonly">-</div>
+                  </div>
+                </div>
+              </form>
             </div>
             <div class="btn-container">
-              <div id="btn-bet-money-container">
-                <button id="btn-bet-money" onclick="betMoney()" class="btn btn-bet">
-                  <img height="16" src="./images/betting.png"/>
-                  Bet
+              <button id="btn-roll-container" onclick="rollDice()" class="btn btn-roll" >
+                Roll Dice
+              </button>
+            </div>
+          </div>
+          <div id="result">
+            <hr />
+            <div class="dice-group">
+              <div>
+                <div class="img-group">
+                  <img id="dice-img-one" width="64" />
+                </div>
+                <div id="dice-one" class="input-group-prepend-readonly dice-result">-</div>
+              </div>
+              <div>
+                <div class="img-group">
+                  <img id="dice-img-two" width="64" />
+                </div>
+                <div id="dice-two" class="input-group-prepend-readonly dice-result">-</div>
+              </div>
+              <div>
+                <div class="img-group">
+                  <img id="dice-img-three" width="64" />
+                </div>
+                <div id="dice-three" class="input-group-prepend-readonly dice-result">-</div>
+              </div>
+            </div>
+            <div id="result-container">
+              <h3 id="result-roll"></h3>
+              <div style="text-align: center;">
+                <span id="text-congrats">Congratulation!!!</span>
+                <h3 id="result-get-money"></h3>
+              </div>
+              <div style="text-align: center;">
+                <button onclick="playAgain()" class="btn btn-play-again">
+                  Play again
                 </button>
               </div>
             </div>
           </div>
-          <div>
-            <form>
-              <div class="radio-group">
-                <div class="radio-group-info">
-                  <div class="radio-label">
-                    <input type="radio" id="low" name="roll" value="-1" onclick="setRollType('low')" checked />
-                    <label for="low">Low</label>
-                  </div>
-                  <div id="low-value" class="input-group-prepend-readonly">-</div>
-                </div>
-                <div class="radio-group-info">
-                  <div class="radio-label">
-                    <input type="radio" id="mid" name="roll" value="-1" onclick="setRollType('mid')" />
-                    <label for="mid">Mid</label>
-                  </div>
-                  <div id="mid-value" class="input-group-prepend-readonly">-</div>
-                </div>
-                <div class="radio-group-info">
-                  <div class="radio-label">
-                    <input type="radio" id="high" name="roll" value="-1" onclick="setRollType('high')" />
-                    <label for="high">High</label>
-                  </div>
-                  <div id="high-value" class="input-group-prepend-readonly">-</div>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="btn-container">
-            <button id="btn-roll-container" onclick="rollDice()" class="btn btn-roll" >
-              Roll Dice
-            </button>
-          </div>
         </div>
-        <div id="result">
-          <hr />
-          <div class="dice-group">
-            <div>
-              <div class="img-group">
-                <img id="dice-img-one" width="64" />
-              </div>
-              <div id="dice-one" class="input-group-prepend-readonly dice-result">-</div>
-            </div>
-            <div>
-              <div class="img-group">
-                <img id="dice-img-two" width="64" />
-              </div>
-              <div id="dice-two" class="input-group-prepend-readonly dice-result">-</div>
-            </div>
-            <div>
-              <div class="img-group">
-                <img id="dice-img-three" width="64" />
-              </div>
-              <div id="dice-three" class="input-group-prepend-readonly dice-result">-</div>
-            </div>
+        <div id="game-information">
+          <h1 style="text-align: center;">How to play Hi-Lo game</h1>
+          <div>
+            <p>1. Player enter the money in slot <b>Low</b>, <b>Mid</b> and <b>High</b>.</p>
+            <p>2. If place money in all slot, click on button to <b>Roll Dice</b>.</p>
+            <p>Player can bet in 3 ways</p>
+            <ul>
+              <li><p.><b>High</b>: won if sum of 3 dices <b style="color: #0000ff;">more than or equal 12</b>.</p.</li>
+              <li><p><b>Mid</b>: won if sum of 3 dices exactly <b style="color: #0000ff;">equal to 11</b>.</p></li>
+              <li><p><b>Low</b>: won if sum of 3 dices <b style="color: #0000ff;">lower than or equal 10</b>.</p></li>
+            </ul>
+            <p>If player won by <b>Mid</b>, You can get <b style="color: #ff0000;">5</b> times reward.</p>
           </div>
-          <div id="result-container">
-            <h2 id="result-roll"></h2>
-            <div style="text-align: center;">
-              <button onclick="playAgain()" class="btn btn-play-again">
-                Play again
-              </button>
-            </div>
+          <div style="text-align: center;">
+            <button onclick="backToGame()" class="btn btn-back">Back to game</button>
           </div>
         </div>
       </div>
@@ -367,6 +436,17 @@
     <script>
       let currentType = 'low';
       let currentElemType = document.getElementById(currentType);
+      let isGame = true;
+
+      function showInfo() {
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('game-information').style.display = 'block';
+      }
+
+      function backToGame() {
+        document.getElementById('game-information').style.display = 'none';
+        document.getElementById('game-container').style.display = 'block';
+      }
 
       function setRollType(type) {
         currentType = type;
@@ -463,9 +543,11 @@
           money = Number(elem.innerText);
           if (dice === 'mid') {
             money *= 5;
+            document.getElementById('text-congrats').style.display = 'block';
           }
         }
-        document.getElementById('result-roll').innerText = 'Won by ' + capitalize(dice) + ', You get money ' + money + '!';
+        document.getElementById('result-roll').innerText = 'Total: ' + result + ', Won by ' + capitalize(dice) + '!';
+        document.getElementById('result-get-money').innerText = 'You get money ' + money + '!';
 
         document.getElementById('btn-roll-container').style.display = 'none';
         document.getElementById('btn-bet-money-container').style.display = 'none';
@@ -476,16 +558,18 @@
         document.getElementById('dice-img-two').src = './images/dice-'+ diceTwo +'.png';
         document.getElementById('dice-img-three').src = './images/dice-'+ diceThree +'.png';
 
-        setTimeout(() => (document.getElementById('dice-one').innerText = diceOne), 1000);
-        setTimeout(() => (document.getElementById('dice-two').innerText = diceTwo), 1500);
-        setTimeout(() => (document.getElementById('dice-three').innerText = diceThree), 2000);
+        setTimeout(() => {
+          document.getElementById('dice-one').innerText = diceOne;
+          document.getElementById('dice-two').innerText = diceTwo;
+          document.getElementById('dice-three').innerText = diceThree;
+        }, 1000);
 
         setTimeout(() => {
           document.getElementById('result-container').style.display = 'block';
 
           document.getElementById("input-money").value = elem.innerText;
           currentElemType.checked = true;
-        }, 2200);
+        }, 1200);
       }
 
       function playAgain() {
@@ -512,6 +596,7 @@
         document.getElementById('btn-roll-container').style.display = 'block';
         document.getElementById('btn-bet-money-container').style.display = 'block';
 
+        document.getElementById('text-congrats').style.display = 'none';
         document.getElementById('result').style.display = 'none';
         document.getElementById('result-container').style.display = 'none';
         document.getElementById("btn-roll-container").style.display = 'none';
