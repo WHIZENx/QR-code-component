@@ -316,6 +316,22 @@
       #game-information {
         display: none;
       }
+
+      #current-money {
+        font-weight: 700;
+      }
+
+      #current-money.green, #result-money {
+        color: #008000;
+      }
+
+      #current-money.red, #result-roll-type.red, #result-roll-amount.red {
+        color: #ff0000;
+      }
+
+      #current-money.red, #result-roll-type.blue, #result-roll-amount.blue {
+        color: #0000ff;
+      }
     </style>
   </head>
   <body>
@@ -326,10 +342,13 @@
           <h1 style="text-align: center;">Hi-Lo game</h1>
           <div style="z-index: 2; position: relative; background-color: #ffffff;">
             <div>
+              <p>Your money: <span id="current-money" /></p>
+            </div>
+            <div>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    Money
+                    $
                   </span>
                 </div>
                 <input min="0" id="input-money" type="number" class="form-control" placeholder="Enter money" onkeypress="onPressBetMoney(event)" />
@@ -399,12 +418,12 @@
               </div>
             </div>
             <div id="result-container">
-              <h3 id="result-roll"></h3>
+              <h3 id="result-roll">Total: <span id="result-roll-amount" ></span>, Won by <span id="result-roll-type" ></span>!</h3>
               <div style="text-align: center;">
                 <span id="text-congrats">Congratulation!!!</span>
-                <h3 id="result-get-money"></h3>
+                <h3 id="result-get-money">You get money <span id="result-money" ></span>!</h3>
               </div>
-              <div style="text-align: center;">
+              <div id="btn-play-container" style="text-align: center;">
                 <button onclick="playAgain()" class="btn btn-play-again">
                   Play again
                 </button>
@@ -415,15 +434,17 @@
         <div id="game-information">
           <h1 style="text-align: center;">How to play Hi-Lo game</h1>
           <div>
-            <p>1. Player enter the money in slot <b>Low</b>, <b>Mid</b> and <b>High</b>.</p>
+            <p>First, You will get <b style="color: #008000;">$1000</b>.</p>
+            <p>1. Enter the money in slot <b>Low</b>, <b>Mid</b> and <b>High</b>.</p>
             <p>2. If place money in all slot, click on button to <b>Roll Dice</b>.</p>
-            <p>Player can bet in 3 ways</p>
+            <p>You can bet in 3 ways</p>
             <ul>
               <li><p.><b>High</b>: won if sum of 3 dices <b style="color: #0000ff;">more than or equal 12</b>.</p.</li>
               <li><p><b>Mid</b>: won if sum of 3 dices exactly <b style="color: #0000ff;">equal to 11</b>.</p></li>
               <li><p><b>Low</b>: won if sum of 3 dices <b style="color: #0000ff;">lower than or equal 10</b>.</p></li>
             </ul>
-            <p>If player won by <b>Mid</b>, You can get <b style="color: #ff0000;">5</b> times reward.</p>
+            <p>If you won by <b>Mid</b>, You can get money <b style="color: #ff0000;">5</b> times reward.</p>
+            <p>If you has money <b style="color: #ff0000;">$0</b>, You can't play again.</p>
           </div>
           <div style="text-align: center;">
             <button onclick="backToGame()" class="btn btn-back">Back to game</button>
@@ -432,9 +453,13 @@
       </div>
     </div>
     <script>
+      let currentMoney = 1000;
       let currentType = 'low';
       let currentElemType = document.getElementById(currentType);
       let isGame = true;
+
+      document.getElementById('current-money').innerText = '$' + currentMoney;
+      document.getElementById('current-money').className = 'green';
 
       function showInfo() {
         document.getElementById('game-container').style.display = 'none';
@@ -480,17 +505,23 @@
           alert("Please input number of money.");
           return;
         }
-        if (input < 0) {
-          alert("Please input money more than or equals 0.");
-          return;
-        }
-        if (String(input).includes('.')) {
-          alert("Please input money with number decimal.");
-          return;
-        }
         const money = Number(input);
+        if (money < 0) {
+          alert("Please input money more than or equal 0.");
+          return;
+        }
+        if (money > currentMoney) {
+          alert("Your money is not enough. Please input money less than or equal to your money.");
+          return;
+        }
+
         if (currentElemType) {
+          currentMoney -= money;
+          if (currentMoney === 0) {
+            document.getElementById('current-money').className = 'red';
+          }
           currentElemType.value = money;
+          document.getElementById('current-money').innerText = '$' + currentMoney;
           document.getElementById(currentType + '-value').innerText = money;
           document.getElementById("input-money").readOnly = true;
           document.getElementById("btn-bet-money").disabled = true;
@@ -554,8 +585,20 @@
 
         document.getElementById('result-get-money').style.animation = 'fadeIn 1s 1';
 
-        document.getElementById('result-roll').innerText = 'Total: ' + result + ', Won by ' + capitalize(dice) + '!';
-        document.getElementById('result-get-money').innerText = 'You get money ' + money + '!';
+        document.getElementById('result-roll-amount').innerText = result;
+        switch (dice) {
+          case 'low':
+          case 'high':
+            document.getElementById('result-roll-amount').className = 'blue';
+            document.getElementById('result-roll-type').className = 'blue';
+            break;
+          case 'mid':
+            document.getElementById('result-roll-amount').className = 'red';
+            document.getElementById('result-roll-type').className = 'blue';
+            break;
+        }
+        document.getElementById('result-roll-type').innerText = capitalize(dice);
+        document.getElementById('result-money').innerText = '$' + money;
 
         document.getElementById('btn-roll-container').style.display = 'none';
         document.getElementById('btn-bet-money-container').style.display = 'none';
@@ -581,6 +624,16 @@
 
           document.getElementById("input-money").value = elem.innerText;
           currentElemType.checked = true;
+
+          currentMoney += money;
+          if (currentMoney > 0) {
+            document.getElementById('current-money').className = 'green';
+          }
+          document.getElementById('current-money').innerText = '$' + currentMoney;
+
+          if (currentMoney === 0) {
+            document.getElementById('btn-play-container').style.display = 'none';
+          }
         }, 1200);
       }
 
